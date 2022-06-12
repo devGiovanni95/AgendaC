@@ -73,10 +73,28 @@ void alterar_contato(Contato **c, int quant){
 	}
 }
 
+void salvar(Contato **c, int quant, char arquivo[]){
+	FILE *file = fopen(arquivo, "w");
+	int i;
+	
+	if(file){
+		fprintf(file,"%d\n", quant);
+		for(i = 0; i < quant; i++){
+			fputs(c[i]->nome,file);
+			fputc('\n',file);
+			fprintf(file, "%d %d %d\n",c[i]->dia, c[i]->mes, c[i]->ano);
+		}
+		fclose(file);
+	}else{
+		printf("\n\tNAO FOI POSSIVEL ABRIR/CRIAR O ARQUIVO!\n");
+	}
+}
+
 
 int main(){
 	
 	Contato *agenda[50];
+	char arquivo[] = {"agenda.txt"};
 	int opcao, tam = 50, quant = 0;
 	
 	do{
@@ -102,6 +120,7 @@ int main(){
 				imprimir(agenda, quant);
 				break;
 			case 4:
+				salvar(agenda, quant,arquivo);
 				break;
 			case 5:
 				break;
